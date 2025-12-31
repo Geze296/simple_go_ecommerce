@@ -23,3 +23,11 @@ func (s *UserService) RegisterUser(user *models.User) error{
 	err := s.Repo.Create(user)
 	return err
 }
+
+func (s *UserService) GetAllUsers() ([]models.User, error){
+	users, err := s.Repo.GetAll()
+	if err!=nil {
+		return nil,err
+	}
+	return users,nil
+}
