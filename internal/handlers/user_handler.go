@@ -3,6 +3,8 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/geze296/simple_go_ecommerce/internal/models"
 	"github.com/geze296/simple_go_ecommerce/internal/services"
@@ -37,6 +39,39 @@ func (h *UserHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
 		"message": "Successfuly return user data",
 	})
 }
+
+func (h *UserHandler) GetSingleUser(w http.ResponseWriter, r *http.Request){
+	
+	parts := strings.Split(r.URL.Path, "/")
+	if len(parts) < 3 || parts[2] == "" {
+		http.Error(w, "user id not provided", http.StatusBadRequest)
+		return
+	}
+
+	idStr := parts[2]
+	id, err := strconv.Atoi(idStr)
+
+	if err != nil {
+		http.Error(w,err.Error(),http.StatusNotFound)
+	}
+
+	user, err := h.userService.GetUserById(uint(id))
+	
+	w.Header().Set("Content-Type","application/json")
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]any{
+			"message":"error while fetch user by id",
+			"error":err.Error(),
+		})
+		return
+	}
+	json.NewEncoder(w).Encode(map[string]any{
+		"id":user,
+		"message":"Successfully user fetched",
+	})
+}
+
 
 func (h *UserHandler) Register(w http.ResponseWriter, r *http.Request) {
 
