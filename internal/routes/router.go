@@ -20,7 +20,7 @@ func SetupRoutes(db *sql.DB) *http.ServeMux{
 		w.Write([]byte("Welcome to Simple E-commerce API"))
 	})
 
-	mux.HandleFunc("POST /register", handlers.Register)
+	mux.HandleFunc("POST /user", userHandler.Register)
 	mux.HandleFunc("/user",userHandler.GetUsers)
 	// mux.HandleFunc("/order", handlers.)
 	return  mux

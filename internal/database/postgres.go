@@ -17,7 +17,6 @@ func ConnectTOPostgres() (*sql.DB, error) {
 	if err := db.Ping(); err != nil{
 		return nil, err
 	}
-	defer db.Close()
 
 	return db, nil
 }

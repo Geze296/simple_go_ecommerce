@@ -23,14 +23,12 @@ func NewUserRepo(db *sql.DB) *UserRepository{
 
 func (r *UserRepository) Create(user *models.User) error {
 
-	query := `INSERT INTO users (name, email, password, phone, role, created_at, updated_at) VALUES (?,?,?,?,?,?,?)`
+	query := `INSERT INTO users (name, email, password, created_at, updated_at) VALUES ($1, $2, $3, $4, $5)`
 
 	_, err := r.db.Exec(query,
 		user.Name,
 		user.Email,
 		user.Password,
-		user.Phone,
-		user.Role,
 		time.Now(),
 		time.Now(),
 	)
