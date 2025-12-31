@@ -13,11 +13,15 @@ type UserRepo interface {
 	FindById(id uint) (*models.User, error)
 }
 
-type userRepo struct {
+type UserRepository struct {
 	db *sql.DB
 }
 
-func (r *userRepo) Create(user *models.User) error {
+func NewUserRepo(db *sql.DB) *UserRepository{
+	return &UserRepository{db: db}
+}
+
+func (r *UserRepository) Create(user *models.User) error {
 
 	query := `INSERT INTO users (name, email, password, phone, role, created_at, updated_at) VALUES (?,?,?,?,?,?,?)`
 

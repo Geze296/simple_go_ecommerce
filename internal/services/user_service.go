@@ -7,9 +7,9 @@ import (
 
 
 type UserService struct{
-	Repo *repositories.UserRepo
+	Repo *repositories.UserRepository
 }
 
-func NewUserSevice(r *repositories.UserRepo) *UserService{
-	return &UserService{Repo: r}
+func NewUserSevice(repo *repositories.UserRepository) *UserService{
+	return &UserService{Repo: repo}
 }
