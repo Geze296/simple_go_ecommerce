@@ -36,8 +36,6 @@ func (r *UserRepository) Create(user *models.User) error {
 	return err
 }
 
-
-
 func (r *UserRepository) GetAll() ([]models.User, error) {
 	var users []models.User
 
@@ -73,13 +71,12 @@ func (r *UserRepository) GetAll() ([]models.User, error) {
 	return users, nil
 }
 
-
-func (r *UserRepository) FindById(id uint) (*models.User, error){
+func (r *UserRepository) FindById(id uint) (*models.User, error) {
 	var user models.User
 
 	query := `SELECT id, name, email, created_at, updated_at FROM users WHERE id = $1`
 
-	row := r.db.QueryRow(query,id)
+	row := r.db.QueryRow(query, id)
 
 	err := row.Scan(
 		&user.ID,
@@ -93,4 +90,29 @@ func (r *UserRepository) FindById(id uint) (*models.User, error){
 		return nil, err
 	}
 	return &user, nil
+}
+
+func (r *UserRepository) Update(id uint, user *models.User) (*models.User, error) {
+	query := `
+		UPDATE users
+		SET name = $1,
+		    email = $2,
+		    updated_at = $3
+		WHERE id = $4
+	`
+
+	_, err := r.db.Exec(query,
+		user.Name,
+		user.Email,
+		time.Now(),
+		id,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	updatedUser, _ := r.FindById(id)
+
+	return updatedUser, nil
 }

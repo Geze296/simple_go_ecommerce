@@ -23,6 +23,7 @@ func SetupRoutes(db *sql.DB) *http.ServeMux{
 	mux.HandleFunc("POST /user", userHandler.Register)
 	mux.HandleFunc("/user",userHandler.GetUsers)
 	mux.HandleFunc("/user/{id}",userHandler.GetSingleUser)
+	mux.HandleFunc("PATCH /user/{id}",userHandler.EditUser)
 	// mux.HandleFunc("/order", handlers.)
 	return  mux
 }

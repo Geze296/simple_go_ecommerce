@@ -40,6 +40,23 @@ func (s *UserService) GetUserById(id uint) (*models.User, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return user,nil
+}
+
+func (s *UserService) UpdateUser(id uint, user *models.User) (*models.User, error){
+	
+	if user.Name == "" {
+		return nil, errors.New("Name Is Required")
+	}
+	if user.Email == "" {
+		return nil, errors.New("Email Is required")
+	}
+
+	updatedUser, err := s.Repo.Update(id, user)
+	if err != nil {
+		return nil, err
+	}
+
+	return updatedUser, nil 
 }
