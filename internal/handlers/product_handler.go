@@ -33,3 +33,20 @@ func (h *ProductHandler) CreateProduct(w http.ResponseWriter, r *http.Request){
 		"Message":"Product Created Successfuly",
 	})
 }
+
+func (h *ProductHandler) GetProducts(w http.ResponseWriter, r *http.Request) {
+	products, err := h.productService.FetchAllProducts()
+	
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]any{
+			"Error":err.Error(),
+		})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]any{
+		"Message":"Successfully Products fetched",
+		"data":products,
+	})
+}

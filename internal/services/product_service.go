@@ -20,3 +20,11 @@ func (s *ProductService) CreateProduct(product *models.Product) error{
 	}
 	return nil
 }
+
+func (s *ProductService) FetchAllProducts() ([]models.Product, error) {
+	products, err := s.productRepository.GetAll()
+	if err != nil {
+		return nil, err
+	}
+	return products, nil
+}
