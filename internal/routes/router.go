@@ -15,6 +15,10 @@ func SetupRoutes(db *sql.DB) *http.ServeMux{
 	userRepo := repositories.NewUserRepo(db)
 	userService := services.NewUserSevice(userRepo)
 	userHandler := handlers.NewUserHandler(userService)
+	
+	productRepo := repositories.NewProductRepo(db)
+	productService := services.NewProductService(productRepo)
+	productHandler := handlers.NewProductHandler(productService)
 
 	mux.HandleFunc("GET /health",func(w http.ResponseWriter, r *http.Request){
 		w.Write([]byte("Welcome to Simple E-commerce API"))
@@ -24,6 +28,7 @@ func SetupRoutes(db *sql.DB) *http.ServeMux{
 	mux.HandleFunc("/user",userHandler.GetUsers)
 	mux.HandleFunc("/user/{id}",userHandler.GetSingleUser)
 	mux.HandleFunc("PATCH /user/{id}",userHandler.EditUser)
+	mux.HandleFunc("POST /product", productHandler.CreateProduct)
 	// mux.HandleFunc("/order", handlers.)
 	return  mux
 }

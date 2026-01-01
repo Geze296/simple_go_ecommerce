@@ -23,12 +23,11 @@ func main() {
 
 	postgresDB, err := database.ConnectTOPostgres()
 
-	defer postgresDB.Close()
-
+	
 	if err != nil {
 		log.Fatal("Error Connecting to Postgres", err)
 	}
-
+	defer postgresDB.Close()
 	fmt.Println("Postgres is Connected")
 
 	mux := routes.SetupRoutes(postgresDB)
